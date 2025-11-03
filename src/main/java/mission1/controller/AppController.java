@@ -34,6 +34,8 @@ public class AppController {
             registerQuote();
         } else if ("목록".equalsIgnoreCase(command)) {
             listQuotes();
+        } else if (command.startsWith("삭제?id=")) {
+            deleteQuote(command);
         }
     }
 
@@ -49,5 +51,11 @@ public class AppController {
     private void listQuotes() {
         var quotes = service.findAllQuotes();
         OutputView.printQuoteList(quotes);
+    }
+
+    private void deleteQuote(String command) {
+        int id = Integer.parseInt(command.substring("삭제?id=".length()));
+        boolean removed = service.deleteQuote(id);
+        OutputView.printQuoteDeleted(id, removed);
     }
 }

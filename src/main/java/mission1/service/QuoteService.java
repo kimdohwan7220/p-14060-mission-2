@@ -14,4 +14,8 @@ public class QuoteService {
     public List<Quote> findAllQuotes() {
         return repository.findAll();
     }
+
+    public boolean deleteQuote(int id) {
+        return repository.deleteById(id);
+    }
 }

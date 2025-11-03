@@ -20,4 +20,8 @@ public class QuoteRepository {
     public List<Quote> findAll() {
         return new ArrayList<>(quotes);
     }
+
+    public boolean deleteById(int id) {
+        return quotes.removeIf(q -> q.getId() == id);
+    }
 }

@@ -26,4 +26,12 @@ public class OutputView {
             System.out.printf("%d / %s / %s%n", q.getId(), q.getAuthor(), q.getContent());
         }
     }
+
+    public static void printQuoteDeleted(int id, boolean removed) {
+        if (removed) {
+            System.out.println(id + "번 명언이 삭제되었습니다.");
+        } else {
+            System.out.println(id + "번 명언은 존재하지 않습니다.");
+        }
+    }
 }
