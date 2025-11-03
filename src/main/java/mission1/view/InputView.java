@@ -19,4 +19,14 @@ public class InputView {
         System.out.print("작가 : ");
         return sc.nextLine().trim();
     }
+
+    public static String quoteInput(String existing) {
+        System.out.print("명언(기존) : " + existing + "\n명언 : ");
+        return sc.nextLine().trim();
+    }
+
+    public static String authorInput(String existing) {
+        System.out.print("작가(기존) : " + existing + "\n작가 : ");
+        return sc.nextLine().trim();
+    }
 }

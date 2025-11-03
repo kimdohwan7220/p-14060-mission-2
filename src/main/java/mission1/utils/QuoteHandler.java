@@ -20,6 +20,8 @@ public class QuoteHandler {
             listQuotes();
         } else if (command.startsWith("삭제?id=")) {
             deleteQuote(command);
+        } else if (command.startsWith("수정?id=")) {
+            updateQuote(command);
         }
     }
 
@@ -42,6 +44,20 @@ public class QuoteHandler {
         try {
             service.deleteQuote(id);
             OutputView.printQuoteDeleted(id);
+        } catch (IllegalArgumentException e) {
+            OutputView.printError(e.getMessage());
+        }
+    }
+
+    private void updateQuote(String command) {
+        int id = Integer.parseInt(command.substring("수정?id=".length()));
+        try {
+            Quote existing = service.findQuoteById(id);
+
+            String newContent = InputView.quoteInput(existing.getContent());
+            String newAuthor = InputView.authorInput(existing.getAuthor());
+
+            service.updateQuote(id, newContent, newAuthor);
         } catch (IllegalArgumentException e) {
             OutputView.printError(e.getMessage());
         }

@@ -25,4 +25,14 @@ public class QuoteService {
     public QuoteRepository getRepository() {
         return repository;
     }
+
+    public Quote findQuoteById(int id) {
+        validator.validateQuoteExists(id);
+        return repository.findById(id);
+    }
+
+    public void updateQuote(int id, String content, String author) {
+        validator.validateQuoteExists(id);
+        repository.update(id, content, author);
+    }
 }
