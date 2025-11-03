@@ -8,9 +8,11 @@ import mission1.view.OutputView;
 public class QuoteHandler {
 
     private final QuoteService service;
+    private final QuoteValidator validator;
 
     public QuoteHandler(QuoteService service) {
         this.service = service;
+        this.validator = new QuoteValidator(service.getRepository());
     }
 
     public void handleCommand(String command) {
@@ -42,6 +44,7 @@ public class QuoteHandler {
     private void deleteQuote(String command) {
         int id = Integer.parseInt(command.substring("삭제?id=".length()));
         try {
+            validator.validateQuoteExists(id);
             service.deleteQuote(id);
             OutputView.printQuoteDeleted(id);
         } catch (IllegalArgumentException e) {
@@ -52,6 +55,7 @@ public class QuoteHandler {
     private void updateQuote(String command) {
         int id = Integer.parseInt(command.substring("수정?id=".length()));
         try {
+            validator.validateQuoteExists(id);
             Quote existing = service.findQuoteById(id);
 
             String newContent = InputView.quoteInput(existing.getContent());

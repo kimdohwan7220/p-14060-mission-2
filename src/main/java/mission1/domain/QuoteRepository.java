@@ -29,11 +29,13 @@ public class QuoteRepository {
         return quotes.stream()
                 .filter(q -> q.getId() == id)
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException(id + "번 명언은 존재하지 않습니다.")); // [추가]
+                .orElse(null);
     }
 
     public void update(int id, String content, String author) {
         Quote q = findById(id);
-        quotes.set(quotes.indexOf(q), new Quote(id, content, author));
+        if (q != null) {
+            quotes.set(quotes.indexOf(q), new Quote(id, content, author));
+        }
     }
 }
