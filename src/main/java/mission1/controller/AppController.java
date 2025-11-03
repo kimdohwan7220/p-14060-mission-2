@@ -32,6 +32,8 @@ public class AppController {
     private void handleCommand(String command) {
         if ("등록".equalsIgnoreCase(command)) {
             registerQuote();
+        } else if ("목록".equalsIgnoreCase(command)) {
+            listQuotes();
         }
     }
 
@@ -42,5 +44,10 @@ public class AppController {
         Quote quote = service.registerQuote(content, author);
 
         OutputView.printQuoteRegistered(quote);
+    }
+
+    private void listQuotes() {
+        var quotes = service.findAllQuotes();
+        OutputView.printQuoteList(quotes);
     }
 }
