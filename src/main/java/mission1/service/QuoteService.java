@@ -1,4 +1,4 @@
-package mission1;
+package mission1.service;
 
 import mission1.domain.Quote;
 import mission1.domain.QuoteRepository;
