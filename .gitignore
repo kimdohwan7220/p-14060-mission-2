@@ -1,0 +1,14 @@
+# Gradle build output
+/build/
+/out/
+/.gradle/
+*.class
+*.jar
+
+# IntelliJ
+/.idea/
+/*.iml
+
+# OS 관련
+.DS_Store
+Thumbs.db
