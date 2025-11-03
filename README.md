@@ -18,12 +18,11 @@
 - test
   - domain
     - QuoteTest.java
+    - QuoteRepositoryTest.java
   - service
     - QuoteServiceTest.java
-  - repository
-    - QuoteRepositoryTest.java
-  - integration
-    - QuoteHandlerIntegrationTest.java
+  - controller
+    - QuoteHandlerTest.java
 
 ### ⚙️ 기능 구현 목록
 #### 🧾 입력
