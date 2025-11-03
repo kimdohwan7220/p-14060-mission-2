@@ -55,7 +55,11 @@ public class AppController {
 
     private void deleteQuote(String command) {
         int id = Integer.parseInt(command.substring("삭제?id=".length()));
-        boolean removed = service.deleteQuote(id);
-        OutputView.printQuoteDeleted(id, removed);
+        try {
+            service.deleteQuote(id);
+            OutputView.printQuoteDeleted(id);
+        } catch (IllegalArgumentException e) {
+            OutputView.printError(e.getMessage());
+        }
     }
 }

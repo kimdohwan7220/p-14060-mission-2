@@ -3,9 +3,11 @@ package mission1.service;
 import java.util.List;
 import mission1.domain.Quote;
 import mission1.domain.QuoteRepository;
+import mission1.utils.QuoteValidator;
 
 public class QuoteService {
     private final QuoteRepository repository = new QuoteRepository();
+    private final QuoteValidator validator = new QuoteValidator(repository);
 
     public Quote registerQuote(String content, String author) {
         return repository.save(content, author);
@@ -15,7 +17,12 @@ public class QuoteService {
         return repository.findAll();
     }
 
-    public boolean deleteQuote(int id) {
-        return repository.deleteById(id);
+    public void deleteQuote(int id) {
+        validator.validateQuoteExists(id);
+        repository.deleteById(id);
+    }
+
+    public QuoteRepository getRepository() {
+        return repository;
     }
 }
