@@ -9,4 +9,14 @@ public class InputView {
         System.out.print("명령) ");
         return sc.nextLine().trim();
     }
+
+    public static String quoteInput() {
+        System.out.print("명언 : ");
+        return sc.nextLine().trim();
+    }
+
+    public static String authorInput() {
+        System.out.print("작가 : ");
+        return sc.nextLine().trim();
+    }
 }
