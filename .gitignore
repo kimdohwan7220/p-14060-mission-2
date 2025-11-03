@@ -8,6 +8,7 @@
 # IntelliJ
 /.idea/
 /*.iml
+/out/
 
 # OS 관련
 .DS_Store
