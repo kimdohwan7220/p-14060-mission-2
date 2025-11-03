@@ -1,8 +1,6 @@
 package mission1.controller;
 
-import mission1.domain.Quote;
 import mission1.service.QuoteService;
-import mission1.utils.QuoteHandler;
 import mission1.view.InputView;
 import mission1.view.OutputView;
 

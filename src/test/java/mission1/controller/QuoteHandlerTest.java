@@ -1,11 +1,11 @@
-package mission1.utils;
+package mission1.controller;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import mission1.domain.Quote;
 import mission1.service.QuoteService;
-import mission1.utils.QuoteHandler;
+import mission1.controller.QuoteHandler;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
