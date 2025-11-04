@@ -25,6 +25,8 @@ public class QuoteHandler {
             deleteQuote(command);
         } else if (command.startsWith("수정?id=")) {
             updateQuote(command);
+        } else if ("빌드".equalsIgnoreCase(command)) {
+            buildData();
         }
     }
 
@@ -63,6 +65,15 @@ public class QuoteHandler {
             service.updateQuote(id, newContent, newAuthor);
             OutputView.printQuoteUpdated(id);
         } catch (IllegalArgumentException e) {
+            OutputView.printError(e.getMessage());
+        }
+    }
+
+    private void buildData() {
+        try {
+            service.buildDataJson();
+            OutputView.printBuildDone();
+        } catch (Exception e) {
             OutputView.printError(e.getMessage());
         }
     }

@@ -36,4 +36,8 @@ public class OutputView {
     public static void printError(String message) {
         System.out.println(message);
     }
+
+    public static void printBuildDone() {
+        System.out.println("data.json 파일의 내용이 갱신되었습니다.");
+    }
 }

@@ -9,8 +9,8 @@ import java.util.*;
 import java.nio.file.*;
 
 public class QuoteRepository {
-
     private static final Path BASE_DIR = Paths.get("db", "wiseSaying");
+    private static final Path DATA_JSON = BASE_DIR.resolve("data.json");
     private static final Path LAST_ID_FILE = BASE_DIR.resolve("lastId.txt");
 
     private final Map<Integer, Quote> store = new LinkedHashMap<>();
@@ -33,7 +33,9 @@ public class QuoteRepository {
             }
 
             try (var files = Files.list(BASE_DIR)) {
-                for (Path jsonFile : files.filter(p -> p.toString().endsWith(".json")).toList()) {
+                for (Path jsonFile : files
+                        .filter(p -> p.toString().matches("\\d+\\.json"))
+                        .toList()) {
                     Quote quote = mapper.readValue(jsonFile.toFile(), Quote.class);
                     store.put(quote.getId(), quote);
                 }
@@ -103,5 +105,18 @@ public class QuoteRepository {
         Quote updated = new Quote(id, content, author);
         store.put(id, updated);
         writeQuote(updated);
+    }
+
+    public void buildDataJson() {
+        try {
+            List<Quote> list = new ArrayList<>(store.values());
+            list.sort(Comparator.comparingInt(Quote::getId)); // 1 → N 오름차순
+
+            mapper.writerWithDefaultPrettyPrinter()
+                    .writeValue(DATA_JSON.toFile(), list);
+
+        } catch (IOException e) {
+            throw new RuntimeException("data.json 생성/갱신 실패", e);
+        }
     }
 }

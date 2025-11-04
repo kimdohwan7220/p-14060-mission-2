@@ -34,4 +34,8 @@ public class QuoteService {
         validator.validateQuoteExists(id);
         repository.update(id, content, author);
     }
+
+    public void buildDataJson() {
+        repository.buildDataJson();
+    }
 }
