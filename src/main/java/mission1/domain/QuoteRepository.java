@@ -81,24 +81,27 @@ public class QuoteRepository {
     }
 
     public List<Quote> findAll() {
-        return new ArrayList<>(quotes);
-    }
-
-    public boolean deleteById(int id) {
-        return quotes.removeIf(q -> q.getId() == id);
+        List<Quote> list = new ArrayList<>(store.values());
+        list.sort(Comparator.comparingInt(Quote::getId).reversed());
+        return list;
     }
 
     public Quote findById(int id) {
-        return quotes.stream()
-                .filter(q -> q.getId() == id)
-                .findFirst()
-                .orElse(null);
+        return store.get(id);
+    }
+
+    public boolean deleteById(int id) {
+        Quote removed = store.remove(id);
+        try {
+            Files.deleteIfExists(jsonPath(id));
+        } catch (IOException ignored) {}
+        return removed != null;
     }
 
     public void update(int id, String content, String author) {
-        Quote q = findById(id);
-        if (q != null) {
-            quotes.set(quotes.indexOf(q), new Quote(id, content, author));
-        }
+        if (!store.containsKey(id)) return;
+        Quote updated = new Quote(id, content, author);
+        store.put(id, updated);
+        writeQuote(updated);
     }
 }
