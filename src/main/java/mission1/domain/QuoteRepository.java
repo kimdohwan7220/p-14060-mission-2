@@ -28,7 +28,7 @@ public class QuoteRepository {
             if (!Files.exists(BASE_DIR)) Files.createDirectories(BASE_DIR);
 
             if (Files.exists(LAST_ID_FILE)) {
-                String lastIdText = Files.readString(LAST_ID_FILE).trim();
+                String lastIdText = Files.readString(LAST_ID_FILE, StandardCharsets.UTF_8).trim();
                 if (!lastIdText.isEmpty()) nextId = Integer.parseInt(lastIdText) + 1;
             }
 

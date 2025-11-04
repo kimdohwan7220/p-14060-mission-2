@@ -20,15 +20,17 @@ public class OutputView {
     public static void printQuoteList(List<Quote> quotes) {
         System.out.println("번호 / 작가 / 명언");
         System.out.println("----------------------");
-
-        for (int i = quotes.size() - 1; i >= 0; i--) {
-            Quote q = quotes.get(i);
+        for (Quote q : quotes) {
             System.out.printf("%d / %s / %s%n", q.getId(), q.getAuthor(), q.getContent());
         }
     }
 
     public static void printQuoteDeleted(int id) {
         System.out.println(id + "번 명언이 삭제되었습니다.");
+    }
+
+    public static void printQuoteUpdated(int id) {
+        System.out.println(id + "번 명언이 수정되었습니다.");
     }
 
     public static void printError(String message) {

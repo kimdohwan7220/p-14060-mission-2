@@ -12,9 +12,7 @@ public class QuoteValidator {
     }
 
     public void validateQuoteExists(int id) {
-        boolean exists = repository.findAll().stream()
-                .anyMatch(q -> q.getId() == id);
-        if (!exists) {
+        if (repository.findById(id) == null) {
             throw new IllegalArgumentException(id + "번 명언은 존재하지 않습니다.");
         }
     }

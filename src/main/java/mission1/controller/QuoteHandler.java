@@ -43,9 +43,8 @@ public class QuoteHandler {
     }
 
     private void deleteQuote(String command) {
-        int id = Integer.parseInt(command.substring("삭제?id=".length()));
         try {
-            validator.validateQuoteExists(id);
+            int id = Integer.parseInt(command.substring("삭제?id=".length()));
             service.deleteQuote(id);
             OutputView.printQuoteDeleted(id);
         } catch (IllegalArgumentException e) {
@@ -54,15 +53,15 @@ public class QuoteHandler {
     }
 
     private void updateQuote(String command) {
-        int id = Integer.parseInt(command.substring("수정?id=".length()));
         try {
-            validator.validateQuoteExists(id);
+            int id = Integer.parseInt(command.substring("수정?id=".length()));
             Quote existing = service.findQuoteById(id);
 
             String newContent = InputView.quoteInput(existing.getContent());
             String newAuthor = InputView.authorInput(existing.getAuthor());
 
             service.updateQuote(id, newContent, newAuthor);
+            OutputView.printQuoteUpdated(id);
         } catch (IllegalArgumentException e) {
             OutputView.printError(e.getMessage());
         }
