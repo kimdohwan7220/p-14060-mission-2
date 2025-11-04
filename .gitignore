@@ -9,6 +9,7 @@ gradlew.bat
 build.gradle
 settings.gradle
 gradle/
+db/wiseSaying/
 
 # IntelliJ
 /.idea/
