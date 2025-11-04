@@ -1,55 +1,80 @@
 package mission1.domain;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.*;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.List;
 
 public class QuoteRepository {
 
     private static final Path BASE_DIR = Paths.get("db", "wiseSaying");
     private static final Path LAST_ID_FILE = BASE_DIR.resolve("lastId.txt");
 
+    private final Map<Integer, Quote> store = new LinkedHashMap<>();
+    private int nextId = 1;
+
+    private final ObjectMapper mapper
+            = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
+
     public QuoteRepository() {
-        initializeStorage();
+        init();
     }
 
-    private void initializeStorage() {
+    private void init() {
         try {
-            Files.createDirectories(BASE_DIR);
-            if(!Files.exists(LAST_ID_FILE)) {
-                Files.writeString(LAST_ID_FILE, "0", StandardCharsets.UTF_8);
+            if (!Files.exists(BASE_DIR)) Files.createDirectories(BASE_DIR);
+
+            if (Files.exists(LAST_ID_FILE)) {
+                String lastIdText = Files.readString(LAST_ID_FILE).trim();
+                if (!lastIdText.isEmpty()) nextId = Integer.parseInt(lastIdText) + 1;
             }
-        } catch (IOException ignored) {};
-    }
 
-    public Quote save(String content, String author) {
-        int newId = nextId();
-        Quote quote = new Quote(newId, content, author);
-        quotes.add(quote);
-        return quote;
-    }
-
-    private int nextId() {
-        return readLastId() + 1;
-    }
-
-
-    private int readLastId() {
-        try {
-            if (!Files.exists(LAST_ID_FILE)) return 0;
-            String value = Files.readString(LAST_ID_FILE, StandardCharsets.UTF_8).trim();
-            if (value.isEmpty()) return 0;
-            return Integer.parseInt(value);
+            try (var files = Files.list(BASE_DIR)) {
+                for (Path jsonFile : files.filter(p -> p.toString().endsWith(".json")).toList()) {
+                    Quote quote = mapper.readValue(jsonFile.toFile(), Quote.class);
+                    store.put(quote.getId(), quote);
+                }
+            }
         } catch (Exception e) {
-            return 0;
+            throw new RuntimeException("저장소 초기화 실패", e);
         }
     }
 
-    private final List<Quote> quotes = new ArrayList<>();
-    private int nextId = 1; // 자동 증가 ID
+    public Quote save(String content, String author) {
+        int id = getNextId();
+        Quote quote = new Quote(id, content, author);
+        store.put(id, quote);
+        writeQuote(quote);
+        writeLastId(id);
+        return quote;
+    }
 
+    private Path jsonPath(int id) {
+        return BASE_DIR.resolve(id + ".json");
+    }
+
+    private void writeQuote(Quote quote) {
+        try {
+            mapper.writeValue(jsonPath(quote.getId()).toFile(), quote);
+        } catch (IOException e) {
+            throw new RuntimeException("명언 저장 실패", e);
+        }
+    }
+
+    private void writeLastId(int lastId) {
+        try {
+            Files.writeString(
+                    LAST_ID_FILE,
+                    String.valueOf(lastId),
+                    StandardCharsets.UTF_8,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING
+            );
+        } catch (IOException ignored) {}
+    }
 
     private int getNextId() {
         return nextId++;
